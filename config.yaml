@@ -1,77 +1,339 @@
+---
 port: 7890
 socks-port: 7891
 redir-port: 7892
-tproxy-port: 7893
-bind-address: '*'
-mode: rule
+tproxy-port: 7895
+# HAPUS TANDA PAGAR INI JIKA INGIN KALIAN GUNAKAN
+#mixed-port: 7893
 allow-lan: true
-log-level: silent
-external-controller: 0.0.0.0:2222
-external-ui: yacd-gh-pages
-ipv6: true
-secret : ""
+mode: script
+log-level: info
+ipv6: false
+external-controller: 0.0.0.0:9090
+external-ui: "/usr/share/openclash/dashboard"
 dns:
   enable: true
-  ipv6: true
-  listen: 0.0.0.0:1053
+  ipv6: false
   enhanced-mode: fake-ip
-  fake-ip-range: 100.0.0.1/10
-  use-hosts: true
+  listen: 0.0.0.0:7874
+  fallback-filter:
+    geoip: true
+    geoip-code: ID
+    ipcidr:
+    - 0.0.0.0/8
+    - 10.0.0.0/8
+    - 100.64.0.0/10
+    - 127.0.0.0/8
+    - 169.254.0.0/16
+    - 172.24.0.0/16
+    - 172.16.0.0/12
+    - 192.0.0.0/24
+    - 192.0.2.0/24
+    - 192.88.99.0/24
+    - 192.168.0.0/16
+    - 198.18.0.0/15
+    - 198.51.100.0/24
+    - 203.0.113.0/24
+    - 224.0.0.0/4
+    - 240.0.0.0/4
+    - 255.255.255.255/32
+    domain:
+    - "+.google.com"
+    - "+.netflix.com"
+    - "+.facebook.com"
+    - "+.youtube.com"
+    - "+.githubusercontent.com"
+    - "+.googlevideo.com"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - msftconnecttest.com
+    - msftncsi.com
+  fake-ip-filter:
+  - "+.pool.ntp.org"
+  - ntp7.*.com
+  - ntp6.*.com
+  - ntp5.*.com
+  - ntp4.*.com
+  - ntp3.*.com
+  - ntp2.*.com
+  - ntp1.*.com
+  - ntp.*.com
+  - time7.*.com
+  - time6.*.com
+  - time5.*.com
+  - time4.*.com
+  - time3.*.com
+  - time2.*.com
+  - time1.*.com
+  - time.*.apple.com
+  - time.*.edu.cn
+  - time.*.gov
+  - time.*.com
+  - "*.home.arpa"
+  - "*.local"
+  - "*.test"
+  - "*.localhost"
+  - "*.invalid"
+  - "*.example"
+  - "*.localdomain"
+  - time1.cloud.tencent.com
+  - "*.ntp.org"
+  - "*.time.edu"
+  - "*.lan"
+  - "*.ntp.org.cn"
+  - "*.time.edu.cn"
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+  - 192.168.8.1
+  - 1.1.1.1
+  - 1.0.0.1
   nameserver:
-    - https://cloudflare-dns.com/dns-query
-    - tls://1dot1dot1dot1.cloudflare-dns.com
-  fallback:
-    - https://dns.google/dns-query
+  - 192.168.8.1
+  - dhcp://"usb0"
+  - 1.1.1.1
+  - 1.0.0.1
+  - https://dns.cloudflare.com/dns-query
+  - tls://1dot1dot1dot1.cloudflare-dns.com
+# HAPUS TANDA PAGAR INI JIKA INGIN KALIAN GUNAKAN
 proxies:
-  - name: VMESS
-    server: 104.17.2.81
-    port: 80
-    type: vmess
-    uuid: 4590df4c-066b-4dc5-aff5-d573b1812047
-    alterId: 0
-    cipher: auto
-    tls: false
-    skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /v2ray
-      headers:
-        Host: sg-01.mdxcloud.net
-    udp: false
-  - name: VMESSTLS
-    server: 104.18.20.219
-    port: 443
-    type: vmess
-    uuid: 16a02e23-e9e4-4c7c-93ec-2d38f6a1da44
-    alterId: 0
-    cipher: auto
-    tls: true
-    skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /v2ray
-      headers:
-        Host: sg-02.mdxcloud.net
-    udp: false
-  - name: TROJAN
-    server: 172.104.60.13
+#  - name: MASTER-VMESS
+#    server: bugmu.com
+#    port: 80
+#    type: vmess
+#    uuid: 4590df4c-066b-4dc5-aff5-d573b1812047
+#    alterId: 0
+#    cipher: auto
+#    tls: false
+#    skip-cert-verify: true
+#    network: ws
+#    ws-opts:
+#      path: /v2ray
+#      headers:
+#        Host: sg-01.mdxcloud.net
+#    udp: false
+#  - name: MASTER-VMESS-TLS
+#    server: bugmu.com
+#    port: 443
+#    type: vmess
+#    uuid: 16a02e23-e9e4-4c7c-93ec-2d38f6a1da44
+#    alterId: 0
+#    cipher: auto
+#    tls: true
+#    skip-cert-verify: true
+#    network: ws
+#    ws-opts:
+#      path: /v2ray
+#      headers:
+#        Host: sg-02.mdxcloud.net
+#    udp: false
+#  - name: MASTER-TROJAN
+#    server: 172.104.60.13
+#    port: 443
+#    type: trojan
+#    password: TROJAN
+#    sni: cf-vod.nimo.tv
+#    skip-cert-verify: true
+#    udp: false
+  - name: MASTER-TROJAN-WS
+    server: bugmu.com
     port: 443
     type: trojan
-    password: TROJAN
-    sni: cf-vod.nimo.tv
+    password: f3465640-1e31-11ed-9f7e-1239d0255272
+    sni: nl-trojan.bonds.id
     skip-cert-verify: true
-    udp: false
+    udp: true
+    network: ws
+    ws-opts:
+      path: /howdy
+      headers:
+        Host: nl-trojan.bonds.id
 proxy-groups:
-  - name: PROVIDER
-    type: load-balance
-    url: 'http://cp.cloudflare.com/'
-    interval: 60
-    lazy: false
-    disable-udp: false
-    strategy: consistent-hashing # or round-robin
-    proxies:
-      - VMESS
-      - VMESSTLS
-      - TROJAN
+- name: PORT-SIMASTER-V1.6
+  type: select
+  disable-udp: false
+  proxies:
+  - MASTER
+  url: http://www.gstatic.com/generate_204
+  interval: '99'
+# HAPUS TANDA PAGAR INI JIKA INGIN KALIAN GUNAKAN
+- name: MASTER
+  type: select
+  disable-udp: false
+  use:
+#  - MASTER-VMESS
+#  - MASTER-VMESS-TLS
+#  - MASTER-TROJAN
+  - MASTER-TROJAN-WS
+  url: http://www.gstatic.com/generate_204
+  interval: '99'
+- name: PORT-ML
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT
+  - MASTER
+- name: PORT-FF
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT
+  - MASTER
+- name: PORT-AOV
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT
+  - MASTER
+- name: PORT-PUBG
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT
+  - MASTER
+- name: PORT-STUMBLE
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT
+  - MASTER
+- name: PORT-DOTA2
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT
+  - MASTER
+- name: PORT-ZEROTIER
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT
+  - MASTER
+- name: PORT-WHATSAPP
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT
+script:
+  code: |
+    def main(ctx, metadata):
+        port = int(metadata["dst_port"])
+        if metadata["network"] == "UDP":
+            if port == "21,22,23,53,80,81,123,443,853,5353,8000,8008,8080,8081,8090,8443,8888":
+                ctx.log('[Script] matched QUIC traffic use PORT-SIMASTER-V1.6')
+                return "PORT-SIMASTER-V1.6"
+
+        port = int(metadata["dst_port"])
+        if metadata["network"] == "UDP":
+            if port == "30190":
+                ctx.log('[Script] matched QUIC traffic use PORT-ML')
+                return "PORT-ML"
+
+        port = int(metadata["dst_port"])
+        if metadata["network"] == "UDP":
+            if port == "10011,10087,39698,39800":
+                ctx.log('[Script] matched QUIC traffic use PORT-FF')
+                return "PORT-FF"
+
+        port = int(metadata["dst_port"])
+        if metadata["network"] == "UDP":
+            if port == "10080,17000":
+                ctx.log('[Script] matched QUIC traffic use PORT-AOV')
+                return "PORT-AOV"
+
+        port = int(metadata["dst_port"])
+        if metadata["network"] == "UDP":
+            if port == "10010,10013,10039,10096,10491,10612,11455,12235,13748,13894,13972,20000,20001,20002":
+                ctx.log('[Script] matched QUIC traffic use PORT-PUBG')
+                return "PORT-PUBG"
+
+        port = int(metadata["dst_port"])
+        if metadata["network"] == "UDP":
+            if port == "7500,7501,7502,7503,7504,7505,7506,7507,7508,7509,7510,7511,7512,7513,7514,7515,7516,7517,7518,7519,7520,7521,7522,7523,7524,7525,7526,7527,7528,7529,7530,7531,7532,7533,7534,7535,7536,7537,7538,7539,7540,7541,7542,7543,7544,7545,7546,7547,7548,7549,7550,7551,7552,7553,7554,7555,7556,7557,7558,7559,7560,7561,7562,7563,7564,7565,7566,7567,7568,7569,7570,7571,7572,7573,7574,7575,7576,7577,7578,7579,7580,7581,7582,7583,7584,7585,7586,7587,7588,7589,7590,7591,7592,7593,7594,7595,7596,7597,7598,7599,7600,7601,7602,7603,7604,7605,7606,7607,7608,7609,7610,7611,7612,7613,7614,7615,7616,7617,7618,7619,7620,7621,7622,7623,7624,7625,7626,7627,7628,7629,7630,7631,7632,7633,7634,7635,7636,7637,7638,7639,7640,7641,7642,7643,7644,7645,7646,7647,7648,7649,7650":
+                ctx.log('[Script] matched QUIC traffic use PORT-DOTA2')
+                return "PORT-DOTA2"
+
+        port = int(metadata["dst_port"])
+        if metadata["network"] == "UDP":
+            if port == "5055,5056,5057,5058":
+                ctx.log('[Script] matched QUIC traffic use PORT-STUMBLE')
+                return "PORT-STUMBLE"
+
+        port = int(metadata["dst_port"])
+        if metadata["network"] == "UDP":
+            if port == "9993":
+                ctx.log('[Script] matched QUIC traffic use PORT-ZEROTIER')
+                return "PORT-ZEROTIER"
+
+        if metadata["dst_ip"] == "":
+            metadata["dst_ip"] = ctx.resolve_ip(metadata["host"])
+
+        port_list = [21, 22, 23, 53, 80, 81, 123, 443, 853, 1443, 5353, 8000, 8008, 8080, 8081, 8090, 8443, 8888]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-SIMASTER-V1.6')
+            return "PORT-SIMASTER-V1.6"
+
+        port_list = [30021, 30104, 30190]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-ML')
+            return "PORT-ML"
+
+        port_list = [10011, 39698, 39800]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-FF')
+            return "PORT-FF"
+
+        port_list = [10000, 10001, 10002, 10003, 10004, 10005, 10006, 10007, 10008, 10009, 10010, 10011, 10012, 10013, 10014, 10015, 10016, 10017, 10018, 10019, 10020, 10021, 10022, 10023, 10024, 10025, 10026, 10027, 10028, 10029, 10030, 10031, 10032, 10033, 10034, 10035, 10036, 10037, 10038, 10039, 10040, 10041, 10042, 10043, 10044, 10045, 10046, 10047, 10048, 10049, 10050, 10051, 10052, 10053, 10054, 10055, 10056, 10057, 10058, 10059, 10060, 10061, 10062, 10063, 10064, 10065, 10066, 10067, 10068, 10069, 10070, 10071, 10072, 10073, 10074, 10075, 10076, 10077, 10078, 10079, 10080, 10081, 10082, 10083, 10084, 10085, 10086, 10087, 10088, 10089, 10090, 10091, 10092, 10093, 10094]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-AOV')
+            return "PORT-AOV"
+
+        port_list = [10012, 17500]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-PUBG')
+            return "PORT-PUBG"
+
+        port_list = [5055, 5056, 5057, 5058]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-STUMBLE')
+            return "PORT-STUMBLE"
+
+        port_list = [3013, 18082, 65010, 65050]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-DOTA2')
+            return "PORT-DOTA2"
+
+        port_list = [9993]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-ZEROTIER')
+            return "PORT-ZEROTIER"
+
+        port_list = [3478, 5222]
+        if port in port_list:
+            ctx.log('[Script] common port use PORT-WHATSAPP')
+            return "PORT-WHATSAPP"
+            
+        if metadata["dst_ip"] == "":
+            return "PORT-SIMASTER-V1.6"
+
+        code = ctx.geoip(metadata["dst_ip"])
+        if code == "ID":
+            ctx.log('[Script] Geoip ID')
+            return "PORT-SIMASTER-V1.6"
+
+        ctx.log('[Script] SIMASTER-V1.6')
+        return "PORT-SIMASTER-V1.6"
 rules:
-  - MATCH,PROVIDER
+- IP-CIDR,198.18.0.1/16,REJECT,no-resolve
+- GEOIP,ID,PORT-SIMASTER-V1.6
+- MATCH,PORT-SIMASTER-V1.6
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+  - tcp://8.8.8.8:53
+  - tcp://8.8.4.4:53
+profile:
+  store-selected: true
+  store-fake-ip: true
+secret: ""
+bind-address: "*"
